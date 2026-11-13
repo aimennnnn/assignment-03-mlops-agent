@@ -10,6 +10,7 @@ Try it by hand:   python -m agent.tools.kubernetes_tools
 
 import json
 import os
+import time
 from datetime import datetime, timezone
 
 from dotenv import load_dotenv
@@ -23,6 +24,7 @@ load_dotenv()
 APPROVED_NAMESPACE = os.environ.get("K8S_NAMESPACE", "mlops")
 APP = os.environ.get("K8S_APP_NAME", "cancer-api")  # Deployment, Service and label name
 TIMEOUT = 10  # seconds per request
+ROLLOUT_WAIT = 90  # how long a restart waits for the new pods to become ready
 # Event reasons that mean a pod was restarted or is failing its health checks.
 RESTART_REASONS = {"BackOff", "Killing", "Unhealthy", "Failed", "FailedScheduling", "OOMKilling"}
 
@@ -312,7 +314,30 @@ def restart_deployment(deployment=APP, namespace=None, confirm=False):
     patch = {"spec": {"template": {"metadata": {"annotations": {
         "kubectl.kubernetes.io/restartedAt": now}}}}}
     _api("apps").patch_namespaced_deployment(deployment, ns, patch, _request_timeout=TIMEOUT)
-    return {"restarted": True, "deployment": deployment, "namespace": ns, "requested_at": now}
+
+    # Wait for the new pods, so the result says whether the restart actually worked.
+    deadline = time.time() + ROLLOUT_WAIT
+    while True:
+        d = _api("apps").read_namespaced_deployment(deployment, ns, _request_timeout=TIMEOUT)
+        want = d.spec.replicas or 0
+        seen = (d.status.observed_generation or 0) >= (d.metadata.generation or 0)
+        finished = (seen and (d.status.updated_replicas or 0) == want
+                    and (d.status.available_replicas or 0) == want
+                    and not d.status.unavailable_replicas)
+        if finished or time.time() >= deadline:
+            break
+        time.sleep(3)
+    return {
+        "restarted": True,
+        "deployment": deployment,
+        "namespace": ns,
+        "requested_at": now,
+        "rollout_finished": finished,
+        "ready_replicas": d.status.ready_replicas or 0,
+        "desired_replicas": want,
+        "note": None if finished else f"New pods were not all ready after {ROLLOUT_WAIT}s; "
+        "check k8s_find_unhealthy_pods and k8s_get_pod_logs.",
+    }
 
 
 # The list the agent will pick from in Step 5.
