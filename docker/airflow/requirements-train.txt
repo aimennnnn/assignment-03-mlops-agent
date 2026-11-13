@@ -1,0 +1,5 @@
+# Libraries the training pipeline needs inside the Airflow container.
+mlflow-skinny==3.18.0
+scikit-learn==1.9.1
+pandas==3.1.1
+skops==0.16.0

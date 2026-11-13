@@ -1,0 +1,30 @@
+# Runs Airflow (scheduler + web UI + API) in one container.
+#   start:  docker compose up -d --build
+#   stop:   docker compose down
+#   logs:   docker compose logs -f airflow
+services:
+  airflow:
+    build: ./docker/airflow
+    image: mlops-agent-airflow:3.4.0
+    container_name: mlops-airflow
+    command: ["bash", "-c", "python /opt/airflow/set_password.py && exec airflow standalone"]
+    ports:
+      - "8080:8080" # Airflow UI and API -> http://127.0.0.1:8080
+    environment:
+      AIRFLOW_USERNAME: ${AIRFLOW_USERNAME:-admin}
+      AIRFLOW_PASSWORD: ${AIRFLOW_PASSWORD:?Set AIRFLOW_PASSWORD in the .env file}
+      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_USERS: ${AIRFLOW_USERNAME:-admin}:admin
+      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_PASSWORDS_FILE: /opt/airflow/passwords.json
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      AIRFLOW__API__WORKERS: "1"
+      # The MLflow server runs on Windows; this name reaches Windows from inside Docker.
+      MLFLOW_TRACKING_URI: http://host.docker.internal:5000
+      # If MLflow does not answer within 20s, try again instead of waiting 2 minutes.
+      MLFLOW_HTTP_REQUEST_TIMEOUT: "20"
+      PROJECT_DIR: /opt/project
+      PIPELINE_PYTHON: /home/airflow/train-venv/bin/python
+    volumes:
+      - ./dags:/opt/airflow/dags # Airflow reads the DAG file from here
+      - .:/opt/project # the whole repo: training code, data, Git history
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

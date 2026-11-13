@@ -212,6 +212,10 @@ def get_registered_models(model_name=None):
         raise ValueError(f"'{model_name}' is not a valid model name")
     query = f"name='{model_name}'" if model_name else None
     versions = []
+    aliases = {}  # (model name, version) -> alias names such as "champion"
+    for m in client.search_registered_models():
+        for alias, version in (m.aliases or {}).items():
+            aliases.setdefault((m.name, str(version)), []).append(alias)
     for v in client.search_model_versions(query):
         metrics = {}
         if v.run_id:
@@ -221,7 +225,7 @@ def get_registered_models(model_name=None):
                 "name": v.name,
                 "version": v.version,
                 "status": v.status,
-                "aliases": list(v.aliases or []),
+                "aliases": aliases.get((v.name, str(v.version)), []),
                 "run_id": v.run_id,
                 "created": datetime.fromtimestamp(
                     v.creation_timestamp / 1000, timezone.utc

@@ -65,6 +65,44 @@ def build_model(a):
     return model, params
 
 
+def compute_metrics(model, X_test, y_test):
+    """Score a trained model on the test split."""
+    pred = model.predict(X_test)
+    metrics = {
+        "accuracy": accuracy_score(y_test, pred),
+        "precision": precision_score(y_test, pred),
+        "recall": recall_score(y_test, pred),
+        "f1": f1_score(y_test, pred),
+        "roc_auc": roc_auc_score(y_test, model.predict_proba(X_test)[:, 1]),
+    }
+    matrix = confusion_matrix(y_test, pred).tolist()
+    return metrics, matrix
+
+
+def log_to_mlflow(model, model_kind, params, metrics, matrix, example, rows,
+                  register=False, extra_tags=None):
+    """Record one training run in MLflow. Returns (run_id, model_uri, provenance)."""
+    mlflow.set_tracking_uri(TRACKING_URI)
+    mlflow.set_experiment(f"cancer-{model_kind}")  # one experiment per model type
+    with mlflow.start_run() as run:
+        provenance = dataset_provenance()
+        mlflow.set_tags(provenance)  # which data was used -> answers "which dataset version?"
+        mlflow.set_tags(extra_tags or {})
+        mlflow.log_params({"model": model_kind, **params})
+        mlflow.log_param("dataset_rows", rows)
+        mlflow.log_metrics(metrics)
+        mlflow.log_dict(metrics, "metrics.json")
+        mlflow.log_dict({"labels": [0, 1], "matrix": matrix}, "confusion_matrix.json")
+        info = mlflow.sklearn.log_model(
+            model,
+            name="model",
+            input_example=example,
+            skops_trusted_types=["sklearn.tree._tree.Tree"],  # needed to save tree models
+            registered_model_name=MODEL_NAME if register else None,
+        )
+    return run.info.run_id, info.model_uri, provenance
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--model", choices=["rf", "logreg"], default="rf")
@@ -83,37 +121,13 @@ def main():
     )
     model, params = build_model(a)
     model.fit(X_train, y_train)
-    pred = model.predict(X_test)
-    metrics = {
-        "accuracy": accuracy_score(y_test, pred),
-        "precision": precision_score(y_test, pred),
-        "recall": recall_score(y_test, pred),
-        "f1": f1_score(y_test, pred),
-        "roc_auc": roc_auc_score(y_test, model.predict_proba(X_test)[:, 1]),
-    }
+    metrics, matrix = compute_metrics(model, X_test, y_test)
+    params = {**params, "test_size": a.test_size, "seed": a.seed}
+    run_id, _, provenance = log_to_mlflow(
+        model, a.model, params, metrics, matrix, X_test.head(2), len(df), register=a.register
+    )
 
-    mlflow.set_tracking_uri(TRACKING_URI)
-    mlflow.set_experiment(f"cancer-{a.model}")  # one experiment per model type
-    with mlflow.start_run() as run:
-        provenance = dataset_provenance()
-        mlflow.set_tags(provenance)  # which data was used -> answers "which dataset version?"
-        mlflow.log_params({"model": a.model, **params, "test_size": a.test_size, "seed": a.seed})
-        mlflow.log_param("dataset_rows", len(df))
-        mlflow.log_metrics(metrics)
-        mlflow.log_dict(metrics, "metrics.json")
-        mlflow.log_dict(
-            {"labels": [0, 1], "matrix": confusion_matrix(y_test, pred).tolist()},
-            "confusion_matrix.json",
-        )
-        mlflow.sklearn.log_model(
-            model,
-            name="model",
-            input_example=X_test.head(2),
-            skops_trusted_types=["sklearn.tree._tree.Tree"],  # needed to save tree models
-            registered_model_name=MODEL_NAME if a.register else None,
-        )
-
-    print(f"run_id:   {run.info.run_id}")
+    print(f"run_id:   {run_id}")
     print(f"dataset:  {provenance['dataset_version']} ({len(df)} rows)")
     print("metrics:  " + ", ".join(f"{k}={v:.4f}" for k, v in metrics.items()))
 
