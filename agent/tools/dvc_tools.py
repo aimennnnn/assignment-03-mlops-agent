@@ -138,15 +138,16 @@ def check_data_changed():
 def explain_reproduce_version(version):
     """Explain how to get back a previous dataset version, for example 'v1.0'."""
     commit = _check_rev(version)
+    datasets = _datasets_at(version)
+    pointers = " ".join(d["path"] + ".dvc" for d in datasets)
     return {
         "version": version,
         "git_commit": commit,
-        "datasets": _datasets_at(version),
+        "datasets": datasets,
         "steps": [
-            f"git checkout {version}   (restores the small .dvc pointer files)",
-            "dvc pull                 (downloads that data from the DVC remote if needed)",
-            "dvc checkout             (puts that exact data back in the data/ folder)",
-            "To return: git checkout main, then dvc checkout",
+            f"git checkout {version} -- {pointers}   (restore that version's pointer file)",
+            "dvc pull   (fetch that exact data from the DVC remote into data/)",
+            f"To return: git checkout HEAD -- {pointers}, then dvc pull",
         ],
         "how_to_verify": "The md5 of the restored file must equal the md5 listed above.",
     }

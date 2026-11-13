@@ -1,0 +1,4 @@
+# Extra tools for testing and linting (used locally and by GitHub Actions).
+pytest==9.2.0
+httpx==0.28.1
+ruff==0.16.9

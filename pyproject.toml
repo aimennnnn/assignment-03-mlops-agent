@@ -1,0 +1,21 @@
+[project]
+name = "assignment-03-mlops-agent"
+version = "1.0.0"
+description = "An AI agent that inspects and operates DVC, MLflow, Airflow and Kubernetes"
+requires-python = ">=3.13"
+# Dependencies are pinned in requirements.txt (runtime) and requirements-dev.txt (tests, lint).
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]  # style errors, real bugs (unused names etc.), import order
+
+[tool.ruff.lint.isort]
+# The repo has a folder called kubernetes/ (manifests). This tells the linter that
+# "import kubernetes" means the installed library, not that folder.
+known-third-party = ["kubernetes"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["ignore::DeprecationWarning"]
