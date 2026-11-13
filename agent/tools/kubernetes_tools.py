@@ -26,6 +26,9 @@ TIMEOUT = 10  # seconds per request
 # Event reasons that mean a pod was restarted or is failing its health checks.
 RESTART_REASONS = {"BackOff", "Killing", "Unhealthy", "Failed", "FailedScheduling", "OOMKilling"}
 
+# Words that mark a log line as an error (so the cause is easy to find).
+ERROR_WORDS = ("ERROR", "FAILED", "Error:", "Exception:")
+
 _apis = {}
 
 
@@ -204,7 +207,7 @@ def get_pod_logs(pod_name, namespace=None, tail_lines=30, previous=False):
         "pod": pod_name,
         "previous_run": bool(previous),
         "line_count": len(lines),
-        "error_lines": [x for x in lines if "ERROR" in x or "FAILED" in x or "Traceback" in x][-5:],
+        "error_lines": [x for x in lines if any(word in x for word in ERROR_WORDS)][-5:],
         "log_tail": lines,
     }
 

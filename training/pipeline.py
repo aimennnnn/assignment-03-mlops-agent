@@ -125,28 +125,35 @@ def gate(a, run_dir):
     mlflow.set_tracking_uri(TRACKING_URI)
     client = MlflowClient()
 
-    reason = None
+    reason, champion_f1, champion_version = None, None, None
+    try:
+        current = client.get_model_version_by_alias(MODEL_NAME, CHAMPION)
+        champion_version = current.version
+        champion_f1 = client.get_run(current.run_id).data.metrics.get("f1", 0)
+    except mlflow.exceptions.MlflowException:
+        log.info("no %s model yet, so there is nothing to beat", CHAMPION)
+
     if f1 < a.min_f1:
         reason = f"f1 {f1:.4f} is below the required {a.min_f1}"
-    else:
-        try:
-            current = client.get_model_version_by_alias(MODEL_NAME, CHAMPION)
-            best = client.get_run(current.run_id).data.metrics.get("f1", 0)
-            if f1 < best:
-                reason = (f"f1 {f1:.4f} is worse than the current {CHAMPION} "
-                          f"(version {current.version}, f1 {best:.4f})")
-        except mlflow.exceptions.MlflowException:
-            log.info("no %s model yet, so there is nothing to beat", CHAMPION)
-
+    elif champion_f1 is not None and f1 < champion_f1:
+        reason = (f"f1 {f1:.4f} is worse than the current {CHAMPION} "
+                  f"(version {champion_version}, f1 {champion_f1:.4f})")
     if reason:
         client.set_tag(run_id, "quality_gate", "failed")
         client.set_tag(run_id, "quality_gate_reason", reason)
         fail(f"quality gate: {reason}. Model was NOT promoted.")
 
-    version = mlflow.register_model(result["model_uri"], MODEL_NAME).version
-    client.set_registered_model_alias(MODEL_NAME, CHAMPION, version)
     client.set_tag(run_id, "quality_gate", "passed")
     log.info("quality gate passed (f1 %.4f >= %s)", f1, a.min_f1)
+    if champion_f1 is not None and f1 <= champion_f1:
+        # Good enough, but not better than what is already approved: keep the champion.
+        client.set_tag(run_id, "promoted", "false")
+        log.info("not promoted: it only matches the %s (version %s, f1 %.4f), which stays",
+                 CHAMPION, champion_version, champion_f1)
+        return
+    version = mlflow.register_model(result["model_uri"], MODEL_NAME).version
+    client.set_registered_model_alias(MODEL_NAME, CHAMPION, version)
+    client.set_tag(run_id, "promoted", "true")
     log.info("promoted: %s version %s is now '%s'", MODEL_NAME, version, CHAMPION)
 
 

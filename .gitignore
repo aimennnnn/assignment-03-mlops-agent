@@ -4,3 +4,4 @@ mlartifacts/
 __pycache__/
 .env
 api/model/
+logs/

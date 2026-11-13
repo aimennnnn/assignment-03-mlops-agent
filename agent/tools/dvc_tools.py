@@ -88,9 +88,13 @@ def list_tracked_datasets():
 @_safe
 def get_current_dataset_version():
     """Get the current dataset version (Git tag), Git commit, data hash and DVC remote."""
+    version = _run(["git", "describe", "--tags", "--abbrev=0"])
     return {
-        "version": _run(["git", "describe", "--tags", "--abbrev=0"]),
-        "git_commit": _run(["git", "rev-parse", "--short", "HEAD"]),
+        "version": version,
+        # the commit where this dataset version was saved (matches MLflow's dataset tag)
+        "git_commit": _run(["git", "rev-parse", "--short", version + "^{commit}"]),
+        # the newest commit of the repository (code may have changed since)
+        "latest_code_commit": _run(["git", "rev-parse", "--short", "HEAD"]),
         "datasets": _datasets_at(),
         "dvc_remote": _run(["dvc", "remote", "list"]),
     }

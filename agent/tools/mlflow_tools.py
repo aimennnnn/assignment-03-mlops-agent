@@ -170,9 +170,18 @@ def find_best_run(metric="f1", experiment_name=None, last_n=5, higher_is_better=
         "metric": metric,
         "higher_is_better": bool(higher_is_better),
         "runs_compared": len(scored),
-        "ranking": scored,
         "best_run": best,
         "cautions": cautions,
+        "ranking": [
+            {
+                "run_id": r["run_id"],
+                "experiment": r["experiment"],
+                metric: r["metrics"][metric],
+                "dataset_version": r["dataset_version"],
+                "started": r["started"],
+            }
+            for r in scored
+        ],
     }
 
 
@@ -235,7 +244,13 @@ def get_registered_models(model_name=None):
         )
     versions.sort(key=lambda v: (v["name"], int(v["version"])))
     note = None if versions else "No registered model versions were found."
-    return {"count": len(versions), "model_versions": versions, "note": note}
+    champions = [v for v in versions if "champion" in v["aliases"]]
+    return {
+        "count": len(versions),
+        "champion": champions[0] if champions else None,  # the model approved for deployment
+        "model_versions": versions,
+        "note": note,
+    }
 
 
 # The list the agent will pick from in Step 5.

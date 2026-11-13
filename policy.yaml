@@ -1,0 +1,14 @@
+# The explicit rules the agent must apply before it recommends retraining.
+retraining:
+  max_model_age_days: 30          # freshness: the champion model may not be older than this
+  require_latest_dataset_version: true   # the champion must be trained on the current DVC version
+  min_f1: 0.95                    # the quality gate used by the training pipeline
+  accepted_evidence:
+    - "freshness: the champion model is older than max_model_age_days"
+    - "data: the champion was trained on an older dataset version than the current DVC version"
+    - "quality gate: the most recent pipeline run failed its quality gate and no later run passed"
+    - "degradation: the user supplied results showing the deployed model has got worse"
+  rules:
+    - "Recommend retraining only when at least one accepted_evidence item is shown by tool results."
+    - "A high or low score alone is not evidence that retraining is needed."
+    - "Never start retraining automatically. It needs an explicit user request and confirmation."

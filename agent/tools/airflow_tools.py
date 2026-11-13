@@ -166,7 +166,15 @@ def get_dag_runs(dag_id="training_pipeline", limit=5):
     """List the most recent runs of a DAG (newest first) with their state."""
     runs = _api("GET", f"/dags/{_check_id(dag_id, 'DAG id')}/dagRuns",
                 params={"order_by": "-run_after", "limit": int(limit)})["dag_runs"]
-    return {"dag_id": dag_id, "count": len(runs), "runs": [_run_summary(r) for r in runs]}
+    out = []
+    for r in runs:
+        summary = _run_summary(r)
+        if r["state"] == "failed":  # add which task failed, e.g. apply_quality_gate
+            summary["failed_tasks"] = [
+                t["task_id"] for t in _tasks(dag_id, r["dag_run_id"]) if t["state"] == "failed"
+            ]
+        out.append(summary)
+    return {"dag_id": dag_id, "count": len(out), "runs": out}
 
 
 @_safe
