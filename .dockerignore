@@ -1,0 +1,4 @@
+# Only the api/ folder is sent to Docker when building the image.
+*
+!api/
+api/__pycache__/

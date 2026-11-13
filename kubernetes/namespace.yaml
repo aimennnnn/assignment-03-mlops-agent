@@ -1,0 +1,5 @@
+# The one namespace the agent is allowed to work in.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mlops

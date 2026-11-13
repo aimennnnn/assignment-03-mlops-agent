@@ -1,0 +1,52 @@
+# Keeps 2 copies (pods) of the prediction API running.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cancer-api
+  namespace: mlops
+  labels:
+    app: cancer-api
+    app.kubernetes.io/version: "1.0.0"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cancer-api
+  template:
+    metadata:
+      labels:
+        app: cancer-api
+        app.kubernetes.io/version: "1.0.0"
+    spec:
+      containers:
+        - name: api
+          image: cancer-api:1.0.0
+          imagePullPolicy: IfNotPresent # use the image built on this machine
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: cancer-api-config
+          # Readiness: only send traffic to a pod once its model is loaded.
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8000
+            initialDelaySeconds: 15 # the model takes a few seconds to load
+            periodSeconds: 5
+            failureThreshold: 3
+          # Liveness: restart the pod if the app stops answering.
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            failureThreshold: 3
+          resources:
+            requests: # what the pod is guaranteed
+              cpu: 100m
+              memory: 256Mi
+            limits: # the most it may use
+              cpu: 500m
+              memory: 512Mi

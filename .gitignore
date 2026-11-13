@@ -3,3 +3,4 @@ mlflow.db
 mlartifacts/
 __pycache__/
 .env
+api/model/

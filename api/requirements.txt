@@ -1,0 +1,7 @@
+# Libraries inside the prediction API image.
+# scikit-learn must be the same version the model was exported with.
+fastapi==0.162.7
+uvicorn==0.54.0
+scikit-learn==1.9.1
+joblib==1.6.0
+numpy==2.5.4

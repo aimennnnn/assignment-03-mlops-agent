@@ -1,0 +1,16 @@
+# One stable address inside the cluster in front of the pods.
+apiVersion: v1
+kind: Service
+metadata:
+  name: cancer-api
+  namespace: mlops
+  labels:
+    app: cancer-api
+spec:
+  type: ClusterIP
+  selector:
+    app: cancer-api
+  ports:
+    - name: http
+      port: 80 # the Service port
+      targetPort: 8000 # the port the app listens on in each pod
