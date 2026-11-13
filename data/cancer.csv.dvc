@@ -1,0 +1,5 @@
+outs:
+- md5: 94bc26a8969cf9601bb9e0611024281c
+  size: 85911
+  hash: md5
+  path: cancer.csv
