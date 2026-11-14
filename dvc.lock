@@ -1,0 +1,13 @@
+schema: '2.0'
+stages:
+  validate:
+    cmd: python -m training.pipeline validate --run-dir runs/dvc
+    deps:
+    - path: data/cancer.csv
+      hash: md5
+      md5: 24d9881fad8cfb3d94f5276d372e422b
+      size: 121955
+    - path: training/pipeline.py
+      hash: md5
+      md5: 54c595b48c600423a9b88fafdcdf0baf
+      size: 7478

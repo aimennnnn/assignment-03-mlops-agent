@@ -14,3 +14,5 @@ Evidence used in [REPORT.md](../REPORT.md). Text output from the tools is in [`e
 | `13-ci-passed-on-pull-request.png` | GitHub Actions: lint and tests passing on a pull request |
 | `14-ci-actions-run.png` | GitHub Actions: the run on `main` |
 | `15-pull-request-merged.png` | The pull request merged after its check passed |
+| `16-agent-retraining-question.png` | The agent answering the retraining question, with the tools it used |
+| `17-agent-trigger-with-confirmation.png` | The agent waiting for a yes, then starting the pipeline and reporting success |

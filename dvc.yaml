@@ -1,0 +1,6 @@
+stages:
+  validate:
+    cmd: python -m training.pipeline validate --run-dir runs/dvc
+    deps:
+      - data/cancer.csv
+      - training/pipeline.py

@@ -7,3 +7,4 @@ api/model/
 logs/
 .pytest_cache/
 .ruff_cache/
+runs/
