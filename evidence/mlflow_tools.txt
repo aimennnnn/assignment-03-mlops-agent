@@ -1,0 +1,346 @@
+﻿{
+  "ok": true,
+  "tool": "list_experiments",
+  "count": 3,
+  "experiments": [
+    {
+      "experiment_id": "2",
+      "name": "cancer-logreg",
+      "run_count": 6
+    },
+    {
+      "experiment_id": "1",
+      "name": "cancer-rf",
+      "run_count": 4
+    },
+    {
+      "experiment_id": "0",
+      "name": "Default",
+      "run_count": 0
+    }
+  ]
+} 
+
+{
+  "ok": true,
+  "tool": "list_runs",
+  "count": 2,
+  "runs": [
+    {
+      "run_id": "1634bfc9d7394e9ebe0dd46696b9897e",
+      "run_name": "wise-wren-376",
+      "experiment": "cancer-logreg",
+      "status": "FINISHED",
+      "started": "2026-11-13T22:11:53+00:00",
+      "metrics": {
+        "accuracy": 0.986,
+        "precision": 0.9889,
+        "recall": 0.9889,
+        "f1": 0.9889,
+        "roc_auc": 0.9977
+      },
+      "params": {
+        "model": "logreg",
+        "C": "1.0",
+        "test_size": "0.25",
+        "seed": "42",
+        "dataset_rows": "569"
+      },
+      "dataset_version": "v2.0",
+      "dataset_git_commit": "c986c4e"
+    },
+    {
+      "run_id": "a8ec401ba97d4f29850eefdec1a47356",
+      "run_name": "shivering-bat-265",
+      "experiment": "cancer-logreg",
+      "status": "FINISHED",
+      "started": "2026-11-13T21:49:55+00:00",
+      "metrics": {
+        "accuracy": 0.986,
+        "precision": 0.9889,
+        "recall": 0.9889,
+        "f1": 0.9889,
+        "roc_auc": 0.9977
+      },
+      "params": {
+        "model": "logreg",
+        "C": "1.0",
+        "test_size": "0.25",
+        "seed": "42",
+        "dataset_rows": "569"
+      },
+      "dataset_version": "v2.0",
+      "dataset_git_commit": "c986c4e"
+    }
+  ]
+} 
+
+{
+  "ok": true,
+  "tool": "find_best_run",
+  "metric": "f1",
+  "higher_is_better": true,
+  "runs_compared": 5,
+  "best_run": {
+    "run_id": "1634bfc9d7394e9ebe0dd46696b9897e",
+    "run_name": "wise-wren-376",
+    "experiment": "cancer-logreg",
+    "status": "FINISHED",
+    "started": "2026-11-13T22:11:53+00:00",
+    "metrics": {
+      "accuracy": 0.986,
+      "precision": 0.9889,
+      "recall": 0.9889,
+      "f1": 0.9889,
+      "roc_auc": 0.9977
+    },
+    "params": {
+      "model": "logreg",
+      "C": "1.0",
+      "test_size": "0.25",
+      "seed": "42",
+      "dataset_rows": "569"
+    },
+    "dataset_version": "v2.0",
+    "dataset_git_commit": "c986c4e"
+  },
+  "cautions": [
+    "Lead over the second-best run is 0.0000 on a single test split.",
+    "Best run is NOT in the Model Registry.",
+    "Best f1 alone does not make a model production-ready: nothing here checks latency, fairness, or behaviour on new data."
+  ],
+  "ranking": [
+    {
+      "run_id": "1634bfc9d7394e9ebe0dd46696b9897e",
+      "experiment": "cancer-logreg",
+      "f1": 0.9889,
+      "dataset_version": "v2.0",
+      "started": "2026-11-13T22:11:53+00:00"
+    },
+    {
+      "run_id": "a8ec401ba97d4f29850eefdec1a47356",
+      "experiment": "cancer-logreg",
+      "f1": 0.9889,
+      "dataset_version": "v2.0",
+      "started": "2026-11-13T21:49:55+00:00"
+    },
+    {
+      "run_id": "596f7cab777d4d7da5165d1c54f79764",
+      "experiment": "cancer-logreg",
+      "f1": 0.9889,
+      "dataset_version": "v2.0",
+      "started": "2026-11-13T19:53:53+00:00"
+    },
+    {
+      "run_id": "5c7c355871544d76bd868b522a11ccb5",
+      "experiment": "cancer-logreg",
+      "f1": 0.9889,
+      "dataset_version": "v2.0",
+      "started": "2026-11-13T19:34:20+00:00"
+    },
+    {
+      "run_id": "1ed52c807de24e21a288e0f6eb1fd3d8",
+      "experiment": "cancer-rf",
+      "f1": 0.9457,
+      "dataset_version": "v2.0",
+      "started": "2026-11-13T19:56:47+00:00"
+    }
+  ]
+} 
+
+{
+  "ok": true,
+  "tool": "get_run_details",
+  "run_id": "1634bfc9d7394e9ebe0dd46696b9897e",
+  "run_name": "wise-wren-376",
+  "experiment": "cancer-logreg",
+  "status": "FINISHED",
+  "started": "2026-11-13T22:11:53+00:00",
+  "metrics": {
+    "accuracy": 0.986,
+    "precision": 0.9889,
+    "recall": 0.9889,
+    "f1": 0.9889,
+    "roc_auc": 0.9977
+  },
+  "params": {
+    "model": "logreg",
+    "C": "1.0",
+    "test_size": "0.25",
+    "seed": "42",
+    "dataset_rows": "569"
+  },
+  "dataset_version": "v2.0",
+  "dataset_git_commit": "c986c4e",
+  "dataset": {
+    "dataset_path": "data/cancer.csv",
+    "dataset_version": "v2.0",
+    "dataset_git_commit": "c986c4e",
+    "dataset_md5": "24d9881fad8cfb3d94f5276d372e422b"
+  },
+  "code_git_commit": "1cc37b7",
+  "artifacts": [
+    "confusion_matrix.json",
+    "metrics.json"
+  ],
+  "logged_models": [
+    "m-8ec81d1fb1b54cca8900816aa98da968"
+  ]
+} 
+
+{
+  "ok": true,
+  "tool": "compare_experiments",
+  "metric": "f1",
+  "experiments": [
+    {
+      "experiment": "cancer-logreg",
+      "runs_with_metric": 6,
+      "best": 0.9889,
+      "average": 0.9851,
+      "worst": 0.9661,
+      "best_run_id": "1634bfc9d7394e9ebe0dd46696b9897e",
+      "best_run_params": {
+        "model": "logreg",
+        "C": "1.0",
+        "test_size": "0.25",
+        "seed": "42",
+        "dataset_rows": "569"
+      },
+      "best_run_dataset_version": "v2.0"
+    },
+    {
+      "experiment": "cancer-rf",
+      "runs_with_metric": 4,
+      "best": 0.967,
+      "average": 0.9488,
+      "worst": 0.9369,
+      "best_run_id": "52ac5ac3ce2743a3a482fb220a20b2af",
+      "best_run_params": {
+        "model": "rf",
+        "n_estimators": "200",
+        "max_depth": "8",
+        "test_size": "0.25",
+        "seed": "42",
+        "dataset_rows": "569"
+      },
+      "best_run_dataset_version": "v2.0"
+    }
+  ]
+} 
+
+{
+  "ok": true,
+  "tool": "get_registered_models",
+  "count": 5,
+  "champion": {
+    "name": "cancer-classifier",
+    "version": "5",
+    "status": "READY",
+    "aliases": [
+      "champion"
+    ],
+    "run_id": "a8ec401ba97d4f29850eefdec1a47356",
+    "created": "2026-11-13T21:50:11+00:00",
+    "run_metrics": {
+      "accuracy": 0.986,
+      "precision": 0.9889,
+      "recall": 0.9889,
+      "f1": 0.9889,
+      "roc_auc": 0.9977
+    }
+  },
+  "model_versions": [
+    {
+      "name": "cancer-classifier",
+      "version": "1",
+      "status": "READY",
+      "aliases": [],
+      "run_id": "52ac5ac3ce2743a3a482fb220a20b2af",
+      "created": "2026-11-13T18:25:33+00:00",
+      "run_metrics": {
+        "accuracy": 0.958,
+        "precision": 0.9565,
+        "recall": 0.9778,
+        "f1": 0.967,
+        "roc_auc": 0.9954
+      }
+    },
+    {
+      "name": "cancer-classifier",
+      "version": "2",
+      "status": "READY",
+      "aliases": [],
+      "run_id": "015ce634401d47b4ac630f15da075745",
+      "created": "2026-11-13T18:25:46+00:00",
+      "run_metrics": {
+        "accuracy": 0.986,
+        "precision": 0.9889,
+        "recall": 0.9889,
+        "f1": 0.9889,
+        "roc_auc": 0.9977
+      }
+    },
+    {
+      "name": "cancer-classifier",
+      "version": "3",
+      "status": "READY",
+      "aliases": [],
+      "run_id": "5c7c355871544d76bd868b522a11ccb5",
+      "created": "2026-11-13T19:40:38+00:00",
+      "run_metrics": {
+        "accuracy": 0.986,
+        "precision": 0.9889,
+        "recall": 0.9889,
+        "f1": 0.9889,
+        "roc_auc": 0.9977
+      }
+    },
+    {
+      "name": "cancer-classifier",
+      "version": "4",
+      "status": "READY",
+      "aliases": [],
+      "run_id": "596f7cab777d4d7da5165d1c54f79764",
+      "created": "2026-11-13T19:54:07+00:00",
+      "run_metrics": {
+        "accuracy": 0.986,
+        "precision": 0.9889,
+        "recall": 0.9889,
+        "f1": 0.9889,
+        "roc_auc": 0.9977
+      }
+    },
+    {
+      "name": "cancer-classifier",
+      "version": "5",
+      "status": "READY",
+      "aliases": [
+        "champion"
+      ],
+      "run_id": "a8ec401ba97d4f29850eefdec1a47356",
+      "created": "2026-11-13T21:50:11+00:00",
+      "run_metrics": {
+        "accuracy": 0.986,
+        "precision": 0.9889,
+        "recall": 0.9889,
+        "f1": 0.9889,
+        "roc_auc": 0.9977
+      }
+    }
+  ],
+  "note": null
+} 
+
+{
+  "ok": false,
+  "tool": "get_run_details",
+  "error": "Not found in MLflow: RESOURCE_DOES_NOT_EXIST: Run with id=0000 not found"
+} 
+
+{
+  "ok": false,
+  "tool": "find_best_run",
+  "error": "No recent run has metric 'made_up_metric'. Recorded metrics: ['accuracy', 'f1', 'precision', 'recall', 'roc_auc']"
+} 
+

@@ -242,11 +242,11 @@ def get_services(namespace=None):
 
 @_safe
 def find_unhealthy_pods(namespace=None):
-    """Find Pods that are not ready or have restarted, with reasons and restart events."""
+    """Find Pods that are not ready, plus Pods that restarted, with reasons and events."""
     ns = _ns(namespace)
     pods = [_pod_summary(p) for p in
             _api("core").list_namespaced_pod(ns, _request_timeout=TIMEOUT).items]
-    unhealthy = [p for p in pods if not p["ready"] or p["restarts"] > 0]
+    unhealthy = [p for p in pods if not p["ready"]]
     warnings = _events(ns, warnings_only=True, limit=15)
     for p in unhealthy:
         p["warning_events"] = [e for e in warnings if e["object"] == p["name"]][-5:]
@@ -255,6 +255,11 @@ def find_unhealthy_pods(namespace=None):
         "total_pods": len(pods),
         "healthy_pods": len(pods) - len(unhealthy),
         "unhealthy_pods": unhealthy,
+        # ready now, but restarted earlier (for example after the machine was switched off)
+        "restarted_but_healthy": [
+            {"name": p["name"], "restarts": p["restarts"], "problems": p["problems"]}
+            for p in pods if p["ready"] and p["restarts"] > 0
+        ],
         "restart_events": [e for e in warnings if e["reason"] in RESTART_REASONS][-8:],
     }
 

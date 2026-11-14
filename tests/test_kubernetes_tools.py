@@ -59,6 +59,19 @@ def test_crash_loop_is_diagnosed_from_status_events_and_logs(broken_cluster):
     assert "missing-model" in version["configmap"]["MODEL_PATH"]
 
 
+def test_a_pod_that_restarted_but_is_ready_counts_as_healthy(healthy_cluster):
+    """A restart in the past (for example after a reboot) is reported, not called unhealthy."""
+    status = healthy_cluster.pods[0]["status"]["containerStatuses"][0]
+    status["restartCount"] = 1
+    status["lastState"] = {"terminated": {"exitCode": 255, "reason": "Unknown",
+                                          "finishedAt": "2026-11-14T09:00:00Z"}}
+
+    result = k8s.find_unhealthy_pods()
+
+    assert result["healthy_pods"] == 2 and result["unhealthy_pods"] == []
+    assert result["restarted_but_healthy"][0]["restarts"] == 1
+
+
 def test_missing_pod_gives_a_clean_error(healthy_cluster):
     result = k8s.get_pod_logs("no-such-pod")
     assert result["ok"] is False and "Not found" in result["error"]

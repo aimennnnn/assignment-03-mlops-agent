@@ -1,0 +1,352 @@
+﻿{
+  "ok": true,
+  "tool": "list_workloads",
+  "namespace": "mlops",
+  "deployments": [
+    {
+      "name": "cancer-api",
+      "desired_replicas": 2,
+      "ready_replicas": 2,
+      "available_replicas": 2,
+      "unavailable_replicas": 0,
+      "image": "cancer-api:1.0.0"
+    }
+  ],
+  "pods": [
+    {
+      "name": "cancer-api-68876699c6-5zh6c",
+      "phase": "Running",
+      "ready": true,
+      "restarts": 1,
+      "image": "cancer-api:1.0.0",
+      "started": "2026-11-13T22:14:53+00:00",
+      "being_deleted": false,
+      "problems": [
+        {
+          "last_exit": {
+            "reason": "Unknown",
+            "exit_code": 255,
+            "finished": "2026-11-14T09:54:12+00:00"
+          }
+        }
+      ]
+    },
+    {
+      "name": "cancer-api-68876699c6-xrx6r",
+      "phase": "Running",
+      "ready": true,
+      "restarts": 1,
+      "image": "cancer-api:1.0.0",
+      "started": "2026-11-13T22:15:10+00:00",
+      "being_deleted": false,
+      "problems": [
+        {
+          "last_exit": {
+            "reason": "Unknown",
+            "exit_code": 255,
+            "finished": "2026-11-14T09:54:12+00:00"
+          }
+        }
+      ]
+    }
+  ]
+} 
+
+{
+  "ok": true,
+  "tool": "get_services",
+  "namespace": "mlops",
+  "services": [
+    {
+      "name": "cancer-api",
+      "type": "ClusterIP",
+      "cluster_ip": "10.96.123.234",
+      "ports": [
+        {
+          "port": 80,
+          "target_port": 8000,
+          "protocol": "TCP"
+        }
+      ],
+      "selector": {
+        "app": "cancer-api"
+      },
+      "ready_endpoints": 2,
+      "not_ready_endpoints": 0,
+      "can_serve_traffic": true
+    }
+  ]
+} 
+
+{
+  "ok": true,
+  "tool": "get_deployed_version",
+  "namespace": "mlops",
+  "deployment": "cancer-api",
+  "image": "cancer-api:1.0.0",
+  "image_tag": "1.0.0",
+  "version_label": "1.0.0",
+  "desired_replicas": 2,
+  "ready_replicas": 2,
+  "configmap": {
+    "APP_VERSION": "1.0.0",
+    "LOG_LEVEL": "INFO",
+    "MODEL_INFO_PATH": "/app/model/model_info.json",
+    "MODEL_PATH": "/app/model/model.joblib"
+  },
+  "live_version": {
+    "app_version": "1.0.0",
+    "model": {
+      "model_name": "cancer-classifier",
+      "model_version": "4",
+      "alias": "champion",
+      "mlflow_run_id": "596f7cab777d4d7da5165d1c54f79764",
+      "f1": 0.9889,
+      "dataset_version": "v2.0",
+      "dataset_git_commit": "c986c4e",
+      "n_features": 30,
+      "sklearn_version": "1.9.1",
+      "exported_at": "2026-11-13T20:36:10+00:00"
+    }
+  }
+} 
+
+{
+  "ok": true,
+  "tool": "find_unhealthy_pods",
+  "namespace": "mlops",
+  "total_pods": 2,
+  "healthy_pods": 2,
+  "unhealthy_pods": [],
+  "restarted_but_healthy": [
+    {
+      "name": "cancer-api-68876699c6-5zh6c",
+      "restarts": 1,
+      "problems": [
+        {
+          "last_exit": {
+            "reason": "Unknown",
+            "exit_code": 255,
+            "finished": "2026-11-14T09:54:12+00:00"
+          }
+        }
+      ]
+    },
+    {
+      "name": "cancer-api-68876699c6-xrx6r",
+      "restarts": 1,
+      "problems": [
+        {
+          "last_exit": {
+            "reason": "Unknown",
+            "exit_code": 255,
+            "finished": "2026-11-14T09:54:12+00:00"
+          }
+        }
+      ]
+    }
+  ],
+  "restart_events": [
+    {
+      "time": "2026-11-13T22:13:46+00:00",
+      "type": "Warning",
+      "reason": "Unhealthy",
+      "object": "cancer-api-cd7d466c4-jsbzt",
+      "message": "Readiness probe failed: Get \"http://10.244.0.11:8000/ready\": dial tcp 10.244.0.11:8000: connect: connection refused",
+      "count": 1
+    },
+    {
+      "time": "2026-11-13T22:13:48+00:00",
+      "type": "Warning",
+      "reason": "Unhealthy",
+      "object": "cancer-api-cd7d466c4-65dqk",
+      "message": "Readiness probe failed: Get \"http://10.244.0.12:8000/ready\": dial tcp 10.244.0.12:8000: connect: connection refused",
+      "count": 1
+    },
+    {
+      "time": "2026-11-13T22:14:26+00:00",
+      "type": "Warning",
+      "reason": "BackOff",
+      "object": "cancer-api-cd7d466c4-jb84z",
+      "message": "Back-off restarting failed container api in pod cancer-api-cd7d466c4-jb84z_mlops(a58c5b9b-2c62-4ed1-9616-34ddfe2b16ce)",
+      "count": 5
+    },
+    {
+      "time": "2026-11-13T22:14:28+00:00",
+      "type": "Warning",
+      "reason": "BackOff",
+      "object": "cancer-api-cd7d466c4-psj4k",
+      "message": "Back-off restarting failed container api in pod cancer-api-cd7d466c4-psj4k_mlops(30e0b7d7-b729-4480-8585-aa3a013d1f71)",
+      "count": 5
+    },
+    {
+      "time": "2026-11-14T10:00:14+00:00",
+      "type": "Warning",
+      "reason": "Unhealthy",
+      "object": "cancer-api-68876699c6-5zh6c",
+      "message": "Readiness probe failed: Get \"http://10.244.0.5:8000/ready\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)",
+      "count": 1
+    }
+  ]
+} 
+
+{
+  "ok": true,
+  "tool": "get_pod_status",
+  "name": "cancer-api-68876699c6-5zh6c",
+  "phase": "Running",
+  "ready": true,
+  "restarts": 1,
+  "image": "cancer-api:1.0.0",
+  "started": "2026-11-13T22:14:53+00:00",
+  "being_deleted": false,
+  "problems": [
+    {
+      "last_exit": {
+        "reason": "Unknown",
+        "exit_code": 255,
+        "finished": "2026-11-14T09:54:12+00:00"
+      }
+    }
+  ],
+  "namespace": "mlops",
+  "node": "desktop-control-plane",
+  "conditions": {
+    "PodReadyToStartContainers": "True",
+    "Initialized": "True",
+    "Ready": "True",
+    "ContainersReady": "True",
+    "PodScheduled": "True"
+  },
+  "readiness_probe": {
+    "path": "/ready",
+    "port": 8000,
+    "every_seconds": 5,
+    "fail_after": 3
+  },
+  "liveness_probe": {
+    "path": "/health",
+    "port": 8000,
+    "every_seconds": 10,
+    "fail_after": 3
+  },
+  "resources": {
+    "requests": {
+      "cpu": "100m",
+      "memory": "256Mi"
+    },
+    "limits": {
+      "cpu": "500m",
+      "memory": "512Mi"
+    }
+  },
+  "events": [
+    {
+      "time": "2026-11-13T22:14:53+00:00",
+      "type": "Normal",
+      "reason": "Pulled",
+      "object": "cancer-api-68876699c6-5zh6c",
+      "message": "Container image \"cancer-api:1.0.0\" already present on machine",
+      "count": 1
+    },
+    {
+      "time": "2026-11-13T22:14:53+00:00",
+      "type": "Normal",
+      "reason": "Created",
+      "object": "cancer-api-68876699c6-5zh6c",
+      "message": "Created container: api",
+      "count": 1
+    },
+    {
+      "time": "2026-11-13T22:14:53+00:00",
+      "type": "Normal",
+      "reason": "Started",
+      "object": "cancer-api-68876699c6-5zh6c",
+      "message": "Started container api",
+      "count": 1
+    },
+    {
+      "time": "2026-11-14T09:54:17+00:00",
+      "type": "Normal",
+      "reason": "SandboxChanged",
+      "object": "cancer-api-68876699c6-5zh6c",
+      "message": "Pod sandbox changed, it will be killed and re-created.",
+      "count": 1
+    },
+    {
+      "time": "2026-11-14T09:54:19+00:00",
+      "type": "Normal",
+      "reason": "Pulled",
+      "object": "cancer-api-68876699c6-5zh6c",
+      "message": "Container image \"cancer-api:1.0.0\" already present on machine",
+      "count": 1
+    },
+    {
+      "time": "2026-11-14T09:54:19+00:00",
+      "type": "Normal",
+      "reason": "Created",
+      "object": "cancer-api-68876699c6-5zh6c",
+      "message": "Created container: api",
+      "count": 1
+    },
+    {
+      "time": "2026-11-14T09:54:19+00:00",
+      "type": "Normal",
+      "reason": "Started",
+      "object": "cancer-api-68876699c6-5zh6c",
+      "message": "Started container api",
+      "count": 1
+    },
+    {
+      "time": "2026-11-14T10:00:14+00:00",
+      "type": "Warning",
+      "reason": "Unhealthy",
+      "object": "cancer-api-68876699c6-5zh6c",
+      "message": "Readiness probe failed: Get \"http://10.244.0.5:8000/ready\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)",
+      "count": 1
+    }
+  ]
+} 
+
+{
+  "ok": true,
+  "tool": "get_pod_logs",
+  "namespace": "mlops",
+  "pod": "cancer-api-68876699c6-5zh6c",
+  "previous_run": false,
+  "line_count": 10,
+  "error_lines": [],
+  "log_tail": [
+    "INFO:     10.244.0.1:36438 - \"GET /ready HTTP/1.1\" 200 OK",
+    "INFO:     10.244.0.1:36442 - \"GET /ready HTTP/1.1\" 200 OK",
+    "INFO:     10.244.0.1:60698 - \"GET /health HTTP/1.1\" 200 OK",
+    "INFO:     10.244.0.1:60706 - \"GET /ready HTTP/1.1\" 200 OK",
+    "INFO:     10.244.0.1:60708 - \"GET /ready HTTP/1.1\" 200 OK",
+    "INFO:     10.244.0.1:42270 - \"GET /health HTTP/1.1\" 200 OK",
+    "INFO:     10.244.0.1:42282 - \"GET /ready HTTP/1.1\" 200 OK",
+    "INFO:     10.244.0.1:42296 - \"GET /ready HTTP/1.1\" 200 OK",
+    "INFO:     10.244.0.1:59476 - \"GET /health HTTP/1.1\" 200 OK",
+    "INFO:     10.244.0.1:59480 - \"GET /version HTTP/1.1\" 200 OK"
+  ]
+} 
+
+{
+  "ok": true,
+  "tool": "restart_deployment",
+  "restarted": false,
+  "needs_confirmation": true,
+  "message": "This would restart the 2 pod(s) of deployment 'cancer-api' in namespace 'mlops'. Ask the user to confirm, then call again with confirm=True."
+} 
+
+{
+  "ok": false,
+  "tool": "restart_deployment",
+  "error": "Namespace 'kube-system' is not approved. These tools only work in 'mlops'."
+} 
+
+{
+  "ok": false,
+  "tool": "get_pod_logs",
+  "error": "Not found in Kubernetes: pods \"no-such-pod\" not found"
+} 
+

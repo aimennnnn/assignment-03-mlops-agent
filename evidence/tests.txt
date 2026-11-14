@@ -1,0 +1,69 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\aimen\assignment-03-mlops-agent\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\aimen\assignment-03-mlops-agent
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.16.0, hydra-core-1.3.8, platformdirs-4.14.5
+collecting ... collected 52 items
+
+tests/test_agent.py::test_agent_runs_the_tools_the_model_selects PASSED  [  1%]
+tests/test_agent.py::test_agent_does_not_invent_results_when_a_tool_is_unavailable PASSED [  3%]
+tests/test_agent.py::test_state_changing_tool_is_not_run_without_confirmation PASSED [  5%]
+tests/test_agent.py::test_confirmed_action_runs_exactly_once PASSED      [  7%]
+tests/test_agent.py::test_read_only_tool_cannot_be_confirmed_into_a_change PASSED [  9%]
+tests/test_agent.py::test_invalid_arguments_are_rejected_before_the_tool_runs PASSED [ 11%]
+tests/test_agent.py::test_unknown_tool_is_reported_not_guessed PASSED    [ 13%]
+tests/test_agent.py::test_tool_timeout_is_handled PASSED                 [ 15%]
+tests/test_agent.py::test_crashing_tool_does_not_crash_the_agent PASSED  [ 17%]
+tests/test_agent.py::test_retraining_assessment_must_check_every_system PASSED [ 19%]
+tests/test_agent.py::test_answer_without_tools_is_flagged PASSED         [ 21%]
+tests/test_agent.py::test_llm_failure_is_reported_clearly PASSED         [ 23%]
+tests/test_agent.py::test_every_tool_call_is_logged_without_secrets PASSED [ 25%]
+tests/test_airflow_tools.py::test_unapproved_dag_is_never_triggered PASSED [ 26%]
+tests/test_airflow_tools.py::test_trigger_needs_confirmation PASSED      [ 28%]
+tests/test_airflow_tools.py::test_failed_run_names_the_failed_task PASSED [ 30%]
+tests/test_airflow_tools.py::test_airflow_down_returns_an_error_not_data PASSED [ 32%]
+tests/test_airflow_tools.py::test_airflow_timeout PASSED                 [ 34%]
+tests/test_airflow_tools.py::test_bad_dag_id_is_rejected PASSED          [ 36%]
+tests/test_api.py::test_health_and_tool_list PASSED                      [ 38%]
+tests/test_api.py::test_invalid_requests_are_rejected PASSED             [ 40%]
+tests/test_api.py::test_chat_returns_a_structured_reply PASSED           [ 42%]
+tests/test_dvc_tools.py::test_lists_tracked_datasets PASSED              [ 44%]
+tests/test_dvc_tools.py::test_current_version_reports_tag_and_commit PASSED [ 46%]
+tests/test_dvc_tools.py::test_only_approved_commands_can_run PASSED      [ 48%]
+tests/test_dvc_tools.py::test_unsafe_version_name_is_rejected PASSED     [ 50%]
+tests/test_dvc_tools.py::test_dvc_timeout_is_reported PASSED             [ 51%]
+tests/test_dvc_tools.py::test_dvc_not_installed PASSED                   [ 53%]
+tests/test_kubernetes_tools.py::test_unauthorized_kubernetes_modification_is_rejected PASSED [ 55%]
+tests/test_kubernetes_tools.py::test_reading_another_namespace_is_rejected_too PASSED [ 57%]
+tests/test_kubernetes_tools.py::test_restart_needs_confirmation PASSED   [ 59%]
+tests/test_kubernetes_tools.py::test_restart_reports_when_new_pods_do_not_become_ready PASSED [ 61%]
+tests/test_kubernetes_tools.py::test_healthy_cluster_is_reported_healthy PASSED [ 63%]
+tests/test_kubernetes_tools.py::test_crash_loop_is_diagnosed_from_status_events_and_logs PASSED [ 65%]
+tests/test_kubernetes_tools.py::test_a_pod_that_restarted_but_is_ready_counts_as_healthy PASSED [ 67%]
+tests/test_kubernetes_tools.py::test_missing_pod_gives_a_clean_error PASSED [ 69%]
+tests/test_kubernetes_tools.py::test_no_cluster_configured PASSED        [ 71%]
+tests/test_mlflow_tools.py::test_best_run_is_chosen_by_the_metric PASSED [ 73%]
+tests/test_mlflow_tools.py::test_best_run_comes_with_cautions PASSED     [ 75%]
+tests/test_mlflow_tools.py::test_metric_that_was_never_recorded_is_an_error PASSED [ 76%]
+tests/test_mlflow_tools.py::test_unknown_experiment_is_an_error PASSED   [ 78%]
+tests/test_mlflow_tools.py::test_empty_registry_is_reported_as_empty PASSED [ 80%]
+tests/test_mlflow_tools.py::test_mlflow_down_returns_an_error_not_data PASSED [ 82%]
+tests/test_pipeline.py::test_validation_passes_for_tracked_data PASSED   [ 84%]
+tests/test_pipeline.py::test_validation_fails_when_data_changed_without_dvc PASSED [ 86%]
+tests/test_pipeline.py::test_gate_blocks_a_model_below_the_threshold PASSED [ 88%]
+tests/test_pipeline.py::test_gate_blocks_a_model_worse_than_the_champion PASSED [ 90%]
+tests/test_pipeline.py::test_gate_keeps_the_champion_when_the_new_model_only_matches_it PASSED [ 92%]
+tests/test_pipeline.py::test_gate_promotes_a_better_model PASSED         [ 94%]
+tests/test_pipeline.py::test_gate_promotes_the_first_good_model PASSED   [ 96%]
+tests/test_tracing.py::test_secret_values_are_redacted PASSED            [ 98%]
+tests/test_tracing.py::test_redact_keeps_ordinary_values PASSED          [100%]
+
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\aimen\assignment-03-mlops-agent\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 52 passed, 1 warning in 2.94s ========================

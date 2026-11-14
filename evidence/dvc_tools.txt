@@ -1,0 +1,94 @@
+﻿{
+  "ok": true,
+  "tool": "list_tracked_datasets",
+  "count": 1,
+  "datasets": [
+    {
+      "path": "data/cancer.csv",
+      "md5": "24d9881fad8cfb3d94f5276d372e422b",
+      "size_bytes": 121955
+    }
+  ]
+} 
+
+{
+  "ok": true,
+  "tool": "get_current_dataset_version",
+  "version": "v2.0",
+  "git_commit": "c986c4e",
+  "latest_code_commit": "e258d2e",
+  "datasets": [
+    {
+      "path": "data/cancer.csv",
+      "md5": "24d9881fad8cfb3d94f5276d372e422b",
+      "size_bytes": 121955
+    }
+  ],
+  "dvc_remote": "localremote     C:\\Users\\aimen\\assignment-03-mlops-agent\\dvc-storage    \n(default)"
+} 
+
+{
+  "ok": true,
+  "tool": "compare_dataset_versions",
+  "version_a": {
+    "name": "v1.0",
+    "git_commit": "64e5e07"
+  },
+  "version_b": {
+    "name": "v2.0",
+    "git_commit": "c986c4e"
+  },
+  "changes": [
+    {
+      "path": "data/cancer.csv",
+      "status": "modified",
+      "md5_a": "94bc26a8969cf9601bb9e0611024281c",
+      "md5_b": "24d9881fad8cfb3d94f5276d372e422b",
+      "size_change_bytes": 36044
+    }
+  ],
+  "dvc_diff": {
+    "added": [],
+    "deleted": [],
+    "modified": [
+      {
+        "path": "data\\cancer.csv"
+      }
+    ],
+    "renamed": []
+  }
+} 
+
+{
+  "ok": true,
+  "tool": "check_data_changed",
+  "changed": false,
+  "details": {}
+} 
+
+{
+  "ok": true,
+  "tool": "explain_reproduce_version",
+  "version": "v1.0",
+  "git_commit": "64e5e07",
+  "datasets": [
+    {
+      "path": "data/cancer.csv",
+      "md5": "94bc26a8969cf9601bb9e0611024281c",
+      "size_bytes": 85911
+    }
+  ],
+  "steps": [
+    "git checkout v1.0 -- data/cancer.csv.dvc   (restore that version's pointer file)",
+    "dvc pull   (fetch that exact data from the DVC remote into data/)",
+    "To return: git checkout HEAD -- data/cancer.csv.dvc, then dvc pull"
+  ],
+  "how_to_verify": "The md5 of the restored file must equal the md5 listed above."
+} 
+
+{
+  "ok": false,
+  "tool": "explain_reproduce_version",
+  "error": "Version 'v9.9' does not exist in this repository"
+} 
+

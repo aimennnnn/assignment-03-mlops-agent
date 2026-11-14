@@ -1,0 +1,145 @@
+﻿{
+  "ok": true,
+  "tool": "list_dags",
+  "count": 1,
+  "dags": [
+    {
+      "dag_id": "training_pipeline",
+      "description": "Validate data, train a model, log it to MLflow and apply a quality gate",
+      "is_paused": false,
+      "schedule": null,
+      "tags": [
+        "mlops",
+        "training"
+      ],
+      "agent_may_trigger": true
+    }
+  ],
+  "import_errors": []
+} 
+
+{
+  "ok": true,
+  "tool": "get_dag_runs",
+  "dag_id": "training_pipeline",
+  "count": 3,
+  "runs": [
+    {
+      "run_id": "manual__2026-11-13T22:11:36.513046+00:00",
+      "state": "success",
+      "started": "2026-11-13T22:11:37.252468Z",
+      "ended": "2026-11-13T22:12:07.383257Z",
+      "duration_seconds": 30.1,
+      "triggered_by": "rest_api",
+      "params": {}
+    },
+    {
+      "run_id": "manual__2026-11-13T22:11:05.926506+00:00",
+      "state": "failed",
+      "started": "2026-11-13T22:11:06.284450Z",
+      "ended": "2026-11-13T22:11:17.140045Z",
+      "duration_seconds": 10.9,
+      "triggered_by": "rest_api",
+      "params": {},
+      "failed_tasks": [
+        "validate_dataset"
+      ]
+    },
+    {
+      "run_id": "manual__2026-11-13T21:49:23.784156+00:00",
+      "state": "success",
+      "started": "2026-11-13T21:49:24.268252Z",
+      "ended": "2026-11-13T21:50:12.477449Z",
+      "duration_seconds": 48.2,
+      "triggered_by": "rest_api",
+      "params": {}
+    }
+  ]
+} 
+
+{
+  "ok": true,
+  "tool": "get_dag_run_status",
+  "dag_id": "training_pipeline",
+  "run_id": "manual__2026-11-13T22:11:36.513046+00:00",
+  "state": "success",
+  "started": "2026-11-13T22:11:37.252468Z",
+  "ended": "2026-11-13T22:12:07.383257Z",
+  "duration_seconds": 30.1,
+  "triggered_by": "rest_api",
+  "params": {},
+  "finished": true,
+  "tasks": [
+    {
+      "task_id": "validate_dataset",
+      "state": "success",
+      "tries_used": 1,
+      "retries_allowed": 0,
+      "started": "2026-11-13T22:11:37.806565Z",
+      "duration_seconds": 4.0
+    },
+    {
+      "task_id": "preprocess_data",
+      "state": "success",
+      "tries_used": 1,
+      "retries_allowed": 2,
+      "started": "2026-11-13T22:11:42.084510Z",
+      "duration_seconds": 3.2
+    },
+    {
+      "task_id": "train_model",
+      "state": "success",
+      "tries_used": 1,
+      "retries_allowed": 2,
+      "started": "2026-11-13T22:11:46.657793Z",
+      "duration_seconds": 3.2
+    },
+    {
+      "task_id": "evaluate_and_log_to_mlflow",
+      "state": "success",
+      "tries_used": 1,
+      "retries_allowed": 2,
+      "started": "2026-11-13T22:11:50.687995Z",
+      "duration_seconds": 12.4
+    },
+    {
+      "task_id": "apply_quality_gate",
+      "state": "success",
+      "tries_used": 1,
+      "retries_allowed": 0,
+      "started": "2026-11-13T22:12:03.725807Z",
+      "duration_seconds": 3.0
+    }
+  ]
+} 
+
+{
+  "ok": true,
+  "tool": "get_failed_tasks",
+  "dag_id": "training_pipeline",
+  "run_id": "manual__2026-11-13T22:11:36.513046+00:00",
+  "run_state": "success",
+  "failed_tasks": [],
+  "not_run_because_of_failure": []
+} 
+
+{
+  "ok": true,
+  "tool": "trigger_training_dag",
+  "triggered": false,
+  "needs_confirmation": true,
+  "message": "This would start DAG 'training_pipeline' with params {}. Ask the user to confirm, then call again with confirm=True."
+} 
+
+{
+  "ok": false,
+  "tool": "trigger_training_dag",
+  "error": "DAG 'some_other_dag' is not approved for triggering. Approved: ['training_pipeline']"
+} 
+
+{
+  "ok": false,
+  "tool": "get_dag_runs",
+  "error": "Not found in Airflow: The Dag with ID: `no_such_dag` was not found"
+} 
+

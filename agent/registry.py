@@ -75,7 +75,7 @@ TOOLS = [
     Tool("k8s_get_services", k8s.get_services, s.NoArgs,
          "Services and how many ready Pods each can reach."),
     Tool("k8s_find_unhealthy_pods", k8s.find_unhealthy_pods, s.NoArgs,
-         "Pods that are not ready or restarted, with reasons and restart events."),
+         "Pods that are not ready, pods that restarted, reasons and restart events."),
     Tool("k8s_get_deployed_version", k8s.get_deployed_version, s.DeploymentName,
          "Deployed app version, image, config and the model version the app reports."),
     Tool("k8s_restart_deployment", k8s.restart_deployment, s.DeploymentName,

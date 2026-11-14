@@ -31,7 +31,7 @@ dags/training_pipeline.py   Airflow DAG: validate -> preprocess -> train -> eval
 training/               train.py, pipeline.py (the DAG stages), export_model.py
 kubernetes/             namespace, configmap, deployment, service (+ failure-demo/)
 docker/airflow/         Airflow image used by docker-compose.yml
-tests/                  51 automated tests (no real services needed)
+tests/                  52 automated tests (no real services needed)
 data/                   dataset tracked by DVC (pointer file only; data is in dvc-storage/)
 dvc-storage/            the DVC remote (see Known limitations)
 policy.yaml             explicit rules for recommending retraining
@@ -163,7 +163,7 @@ python -m pytest -v
 ruff check .
 ```
 
-The 51 tests need no MLflow, Airflow, Kubernetes, network or API key. They use a fake
+The 52 tests need no MLflow, Airflow, Kubernetes, network or API key. They use a fake
 cluster (`tests/fake_k8s.py`), a scripted model (`tests/fake_llm.py`) and mocked HTTP and
 command-line calls. GitHub Actions runs the same two commands on every pull request.
 

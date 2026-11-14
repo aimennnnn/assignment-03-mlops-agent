@@ -1,0 +1,9 @@
+﻿NAME                              READY   STATUS    RESTARTS      AGE
+pod/cancer-api-68876699c6-5zh6c   1/1     Running   1 (27m ago)   12h
+pod/cancer-api-68876699c6-xrx6r   1/1     Running   1 (27m ago)   12h
+
+NAME                 TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+service/cancer-api   ClusterIP   10.96.123.234   <none>        80/TCP    13h
+
+NAME                         READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/cancer-api   2/2     2            2           13h
